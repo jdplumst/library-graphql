@@ -5,7 +5,7 @@ const config = {
         "src/generated/resolver-types.ts": {
             plugins: ["typescript", "typescript-resolvers"]
         },
-        "./graphql.schema.json": {
+        "src/graphql.schema.json": {
             plugins: ["introspection"]
         }
     }
