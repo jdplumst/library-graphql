@@ -1,26 +1,13 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { PrismaClient } from "@prisma/client";
+import { typeDefs } from "./schema.js";
 
 const db = new PrismaClient({ log: ["query", "info", "warn", "error"] });
 
 interface ContextValue {
   db: PrismaClient;
 }
-
-const typeDefs = `#graphql
-  type Book {
-    id: ID!
-    title: String!
-    genre: String!
-    publishedDate: String!
-    author: String!
-  }
-  
-  type Query {
-    books: [Book!]
-  }
-`;
 
 const resolvers = {
   Query: {

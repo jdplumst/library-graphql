@@ -1,20 +1,8 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { PrismaClient } from "@prisma/client";
+import { typeDefs } from "./schema.js";
 const db = new PrismaClient({ log: ["query", "info", "warn", "error"] });
-const typeDefs = `#graphql
-  type Book {
-    id: ID!
-    title: String!
-    genre: String!
-    publishedDate: String!
-    author: String!
-  }
-  
-  type Query {
-    books: [Book!]
-  }
-`;
 const resolvers = {
     Query: {
         books: async (_, __, context) => {
@@ -27,9 +15,7 @@ const server = new ApolloServer({
     resolvers
 });
 const { url } = await startStandaloneServer(server, {
-    context: async ({ req }) => ({
-        db: new PrismaClient({ log: ["query", "info", "warn", "error"] })
-    }),
+    context: async ({ req }) => ({ db: db }),
     listen: { port: 5000 }
 });
 console.log(`🚀  Server ready at: ${url}`);

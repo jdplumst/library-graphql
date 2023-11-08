@@ -23,5 +23,5 @@ model Book {
   genre         String
   publishedDate DateTime
   authorId      Int
-  author        Author   @relation(fields: [authorId], references: [id])
+  author        Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
