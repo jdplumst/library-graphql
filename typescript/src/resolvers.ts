@@ -21,6 +21,10 @@ export const resolvers = {
 
     author: async (_, args: QueryAuthorArgs, context: ContextValue) => {
       return context.db.author.findFirst({ where: { id: args.id } });
+    },
+
+    authors: async (_, __, context: ContextValue) => {
+      return context.db.author.findMany();
     }
   }
 };
