@@ -1,5 +1,5 @@
 import { ContextValue } from ".";
-import { QueryBookArgs } from "./generated/resolver-types";
+import { QueryAuthorArgs, QueryBookArgs } from "./generated/resolver-types";
 
 export const resolvers = {
   Query: {
@@ -17,6 +17,10 @@ export const resolvers = {
         ...b,
         publishedDate: new Date(+b.publishedDate).toLocaleDateString()
       }));
+    },
+
+    author: async (_, args: QueryAuthorArgs, context: ContextValue) => {
+      return context.db.author.findFirst({ where: { id: args.id } });
     }
   }
 };

@@ -13,6 +13,9 @@ export const resolvers = {
                 ...b,
                 publishedDate: new Date(+b.publishedDate).toLocaleDateString()
             }));
+        },
+        author: async (_, args, context) => {
+            return context.db.author.findFirst({ where: { id: args.id } });
         }
     }
 };
