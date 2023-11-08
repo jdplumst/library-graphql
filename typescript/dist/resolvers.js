@@ -15,10 +15,22 @@ export const resolvers = {
             }));
         },
         author: async (_, args, context) => {
-            return context.db.author.findFirst({ where: { id: args.id } });
+            return await context.db.author.findFirst({ where: { id: args.id } });
         },
         authors: async (_, __, context) => {
-            return context.db.author.findMany();
+            return await context.db.author.findMany();
+        }
+    },
+    Author: {
+        books: async (parent, _, context) => {
+            return await context.db.book.findMany({ where: { authorId: parent.id } });
         }
     }
+    // Book: {
+    //   author: async (parent: Book, _, context: ContextValue) => {
+    //     return await context.db.author.findFirst({
+    //       where: { id: parent.authorId }
+    //     });
+    //   }
+    // }
 };
