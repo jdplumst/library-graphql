@@ -1,5 +1,8 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { PrismaClient } from "@prisma/client";
+
+const db = new PrismaClient();
 
 const books = [
   {
@@ -14,18 +17,21 @@ const books = [
 
 const typeDefs = `#graphql
   type Book {
-    title: String
-    author: String
+    id: ID!
+    title: String!
+    genre: String!
+    publishedDate: String!
+    author: String!
   }
   
   type Query {
-    books: [Book]
+    books: [Book!]
   }
 `;
 
 const resolvers = {
   Query: {
-    books: () => books
+    books: async () => await db.book.findMany()
   }
 };
 
