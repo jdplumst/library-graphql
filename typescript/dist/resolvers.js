@@ -25,12 +25,12 @@ export const resolvers = {
         books: async (parent, _, context) => {
             return await context.db.book.findMany({ where: { authorId: parent.id } });
         }
+    },
+    Book: {
+        author: async (parent, _, context) => {
+            return await context.db.author.findFirst({
+                where: { Book: { some: { id: parent.id } } }
+            });
+        }
     }
-    // Book: {
-    //   author: async (parent: Book, _, context: ContextValue) => {
-    //     return await context.db.author.findFirst({
-    //       where: { id: parent.authorId }
-    //     });
-    //   }
-    // }
 };
