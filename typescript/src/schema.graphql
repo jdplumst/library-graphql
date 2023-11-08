@@ -1,35 +1,69 @@
+"A type that describes the author"
 type Author {
+  "The author's ID"
   id: ID!
+
+  "The author's first name"
   firstName: String!
+
+  "The author's last name"
   lastName: String!
+
+  "The books that the author wrote"
   books: [Book!]
 }
 
+"A type that describes the book"
 type Book {
+  "The book's ID"
   id: ID!
+
+  "The book's title"
   title: String!
+
+  "The book's genre"
   genre: String!
+
+  "The date that the book was published"
   publishedDate: String!
+
+  "The author of the book"
   author: Author!
 }
 
 type Query {
+  "Get a book by id"
   book(id: ID): Book!
+
+  "Get all books"
   books: [Book!]
+
+  "Get an author by id"
   author(id: ID): Author!
+
+  "Get all authors"
   authors: [Author!]
 }
 
 type Mutation {
+  "Add an author"
   addAuthor(firstName: String, lastName: String): Author
+
+  "Update an existing author by id"
   updateAuthor(id: ID, firstName: String, lastName: String): Author
+
+  "Delete an author by id"
   deleteAuthor(id: ID): Author
+
+  "Add a book"
   addBook(
     title: String
     genre: String
     publishedDate: String
     authorId: ID
   ): Book
+
+  "Update an existing book by id"
   updateBook(
     id: ID
     title: String
@@ -37,5 +71,7 @@ type Mutation {
     publishedDate: String
     authorId: ID
   ): Book
+
+  "Delete a book by id"
   deleteBook(id: ID): Book
 }
