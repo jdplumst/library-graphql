@@ -11,17 +11,17 @@ datasource db {
 }
 
 model Author {
-  id        Int    @id @default(autoincrement())
+  id        String @id @default(uuid())
   firstName String
   lastName  String
   Book      Book[]
 }
 
 model Book {
-  id            Int      @id @default(autoincrement())
+  id            String   @id @default(uuid())
   title         String
   genre         String
   publishedDate DateTime
-  authorId      Int
+  authorId      String
   author        Author   @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
