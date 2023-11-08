@@ -1,46 +1,16 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
-const sqlite = new Database("sqlite.db");
-const db = drizzle(sqlite);
-const books = [
-    {
-        title: "The Awakening",
-        author: "Kate Chopin"
-    },
-    {
-        title: "City of Glass",
-        author: "Paul Auster"
-    }
-];
-const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
-  }
-  
-  type Query {
-    books: [Book]
-  }
-`;
-const resolvers = {
-    Query: {
-        books: () => books
-    }
-};
+import { PrismaClient } from "@prisma/client";
+import { resolvers } from "./resolvers.js";
+import { readFileSync } from "fs";
+const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
+const db = new PrismaClient({ log: ["query", "info", "warn", "error"] });
 const server = new ApolloServer({
     typeDefs,
     resolvers
 });
 const { url } = await startStandaloneServer(server, {
-    context: async ({ req }) => {
-        return {
-            dataSources: {
-                db
-            }
-        };
-    },
+    context: async ({ req }) => ({ db: db }),
     listen: { port: 5000 }
 });
 console.log(`🚀  Server ready at: ${url}`);

@@ -1,21 +1,16 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { PrismaClient } from "@prisma/client";
-import { typeDefs } from "./schema.js";
+import { resolvers } from "./resolvers.js";
+import { readFileSync } from "fs";
+
+const typeDefs = readFileSync("src/schema.graphql", { encoding: "utf-8" });
 
 const db = new PrismaClient({ log: ["query", "info", "warn", "error"] });
 
-interface ContextValue {
+export interface ContextValue {
   db: PrismaClient;
 }
-
-const resolvers = {
-  Query: {
-    books: async (_, __, context: ContextValue) => {
-      return await context.db.book.findMany();
-    }
-  }
-};
 
 const server = new ApolloServer<ContextValue>({
   typeDefs,
