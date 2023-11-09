@@ -43,7 +43,14 @@ class Mutation:
         author.save()
         return author
 
-    updateAuthor: AuthorType
+    @strawberry.mutation
+    def update_author(self, id: int, first_name: str, last_name: str) -> AuthorType:
+        author = models.Author.objects.get(id=id)
+        author.first_name = first_name
+        author.last_name = last_name
+        author.save()
+        return author
+
     deleteAuthor: AuthorType
     addBook: BookType
     updateBook: BookType
