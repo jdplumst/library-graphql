@@ -51,7 +51,12 @@ class Mutation:
         author.save()
         return author
 
-    deleteAuthor: AuthorType
+    @strawberry.mutation
+    def delete_author(self, id: int) -> str:
+        author = models.Author.objects.get(id=id)
+        author.delete()
+        return "Successful delete"
+
     addBook: BookType
     updateBook: BookType
     deleteBook: BookType
