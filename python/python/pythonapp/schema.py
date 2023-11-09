@@ -2,6 +2,7 @@ import datetime
 import strawberry
 from typing import List
 from pythonapp import models
+from pythonapp import resolvers
 
 
 @strawberry.django.type(models.Book)
@@ -23,8 +24,8 @@ class AuthorType:
 
 @strawberry.type
 class Query:
-    author: AuthorType  # = strawberry.field(resolver=get_author)
-    authors: List[AuthorType]
+    author: AuthorType
+    authors: List[AuthorType] = strawberry.field(resolver=resolvers.get_authors)
     book: BookType
     books: List[BookType]
 
