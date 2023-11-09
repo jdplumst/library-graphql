@@ -2,7 +2,6 @@ import datetime
 import strawberry
 from typing import List
 from pythonapp import models
-from pythonapp import resolvers
 
 
 @strawberry.django.type(models.Book)
@@ -25,14 +24,24 @@ class AuthorType:
 @strawberry.type
 class Query:
     author: AuthorType
-    authors: List[AuthorType] = strawberry.field(resolver=resolvers.get_authors)
+
+    @strawberry.field
+    def authors() -> List[AuthorType]:
+        return models.Author.objects.all()
+
+    # authors: List[AuthorType] = strawberry.field(resolver=resolvers.get_authors)
     book: BookType
     books: List[BookType]
 
 
 @strawberry.type
 class Mutation:
-    addAuthor: AuthorType  # = strawberry.mutation(resolver=add_Author)
+    @strawberry.mutation
+    def add_author(self, first_name: str, last_name: str) -> AuthorType:
+        author = models.Author(first_name=first_name, last_name=last_name)
+        author.save()
+        return author
+
     updateAuthor: AuthorType
     deleteAuthor: AuthorType
     addBook: BookType
