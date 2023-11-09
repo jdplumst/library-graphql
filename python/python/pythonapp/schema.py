@@ -23,13 +23,14 @@ class AuthorType:
 
 @strawberry.type
 class Query:
-    author: AuthorType
+    @strawberry.field
+    def author(self, id: int) -> AuthorType:
+        return models.Author.objects.get(pk=id)
 
     @strawberry.field
     def authors() -> List[AuthorType]:
         return models.Author.objects.all()
 
-    # authors: List[AuthorType] = strawberry.field(resolver=resolvers.get_authors)
     book: BookType
     books: List[BookType]
 
