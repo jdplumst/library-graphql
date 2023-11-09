@@ -32,5 +32,21 @@ export const resolvers = {
                 where: { Book: { some: { id: parent.id } } }
             });
         }
+    },
+    Mutation: {
+        addAuthor: async (_, args, context) => {
+            return await context.db.author.create({
+                data: { firstName: args.firstName, lastName: args.lastName }
+            });
+        },
+        updateAuthor: async (_, args, context) => {
+            return await context.db.author.update({
+                data: { firstName: args.firstName, lastName: args.lastName },
+                where: { id: args.id }
+            });
+        },
+        deleteAuthor: async (_, args, context) => {
+            return await context.db.author.delete({ where: { id: args.id } });
+        }
     }
 };
