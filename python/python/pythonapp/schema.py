@@ -32,7 +32,10 @@ class Query:
         return models.Author.objects.all()
 
     book: BookType
-    books: List[BookType]
+
+    @strawberry.field
+    def books() -> List[BookType]:
+        return models.Book.objects.all()
 
 
 @strawberry.type
