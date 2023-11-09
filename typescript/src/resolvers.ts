@@ -3,8 +3,11 @@ import {
   Author,
   Book,
   MutationAddAuthorArgs,
+  MutationAddBookArgs,
   MutationDeleteAuthorArgs,
+  MutationDeleteBookArgs,
   MutationUpdateAuthorArgs,
+  MutationUpdateBookArgs,
   QueryAuthorArgs,
   QueryBookArgs
 } from "./generated/resolver-types";
@@ -78,6 +81,57 @@ export const resolvers = {
       context: ContextValue
     ) => {
       return await context.db.author.delete({ where: { id: args.id } });
+    },
+
+    addBook: async (
+      _: any,
+      args: MutationAddBookArgs,
+      context: ContextValue
+    ) => {
+      const book = await context.db.book.create({
+        data: {
+          title: args.title,
+          genre: args.genre,
+          publishedDate: new Date(args.publishedDate),
+          authorId: args.authorId
+        }
+      });
+      return {
+        ...book,
+        publishedDate: book.publishedDate.toLocaleDateString()
+      };
+    },
+
+    updateBook: async (
+      _: any,
+      args: MutationUpdateBookArgs,
+      context: ContextValue
+    ) => {
+      const book = await context.db.book.update({
+        data: {
+          title: args.title,
+          genre: args.genre,
+          publishedDate: new Date(args.publishedDate),
+          authorId: args.authorId
+        },
+        where: { id: args.id }
+      });
+      return {
+        ...book,
+        publishedDate: book.publishedDate.toLocaleDateString()
+      };
+    },
+
+    deleteBook: async (
+      _: any,
+      args: MutationDeleteBookArgs,
+      context: ContextValue
+    ) => {
+      const book = await context.db.book.delete({ where: { id: args.id } });
+      return {
+        ...book,
+        publishedDate: book.publishedDate.toLocaleDateString()
+      };
     }
   }
 };

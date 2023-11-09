@@ -47,6 +47,42 @@ export const resolvers = {
         },
         deleteAuthor: async (_, args, context) => {
             return await context.db.author.delete({ where: { id: args.id } });
+        },
+        addBook: async (_, args, context) => {
+            const book = await context.db.book.create({
+                data: {
+                    title: args.title,
+                    genre: args.genre,
+                    publishedDate: new Date(args.publishedDate),
+                    authorId: args.authorId
+                }
+            });
+            return {
+                ...book,
+                publishedDate: book.publishedDate.toLocaleDateString()
+            };
+        },
+        updateBook: async (_, args, context) => {
+            const book = await context.db.book.update({
+                data: {
+                    title: args.title,
+                    genre: args.genre,
+                    publishedDate: new Date(args.publishedDate),
+                    authorId: args.authorId
+                },
+                where: { id: args.id }
+            });
+            return {
+                ...book,
+                publishedDate: book.publishedDate.toLocaleDateString()
+            };
+        },
+        deleteBook: async (_, args, context) => {
+            const book = await context.db.book.delete({ where: { id: args.id } });
+            return {
+                ...book,
+                publishedDate: book.publishedDate.toLocaleDateString()
+            };
         }
     }
 };
